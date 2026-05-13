@@ -75,10 +75,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Sultana — Voyage au cœur de tes droits" },
       { name: "description", content: "Une aventure interactive pour les jeunes filles du Maroc : apprends tes droits, ta santé et ton futur avec Sultana." },
       { property: "og:title", content: "Sultana — Voyage au cœur de tes droits" },
-      { property: "og:description", content: "Une aventure interactive et bienveillante pour les jeunes filles du Maroc." },
+      { property: "og:description", content: "Une aventure interactive pour les jeunes filles du Maroc : apprends tes droits, ta santé et ton futur avec Sultana." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Sultana — Voyage au cœur de tes droits" },
+      { name: "twitter:description", content: "Une aventure interactive pour les jeunes filles du Maroc : apprends tes droits, ta santé et ton futur avec Sultana." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3c5f580f-b5b2-4126-83da-1a9f0f05475a/id-preview-a0b47c1c--27f39645-3eed-4127-bca6-df23589a2bc4.lovable.app-1778666233665.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/3c5f580f-b5b2-4126-83da-1a9f0f05475a/id-preview-a0b47c1c--27f39645-3eed-4127-bca6-df23589a2bc4.lovable.app-1778666233665.png" },
     ],
     links: [
       {
