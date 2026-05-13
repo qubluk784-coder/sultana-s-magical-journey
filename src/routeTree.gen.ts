@@ -9,16 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UniversRouteImport } from './routes/univers'
 import { Route as FinalRouteImport } from './routes/final'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UniversIndexRouteImport } from './routes/univers.index'
 import { Route as UniversIdRouteImport } from './routes/univers.$id'
 
-const UniversRoute = UniversRouteImport.update({
-  id: '/univers',
-  path: '/univers',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const FinalRoute = FinalRouteImport.update({
   id: '/final',
   path: '/final',
@@ -27,6 +22,11 @@ const FinalRoute = FinalRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UniversIndexRoute = UniversIndexRouteImport.update({
+  id: '/univers/',
+  path: '/univers/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UniversIdRoute = UniversIdRouteImport.update({
@@ -38,45 +38,38 @@ const UniversIdRoute = UniversIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/final': typeof FinalRoute
-  '/univers': typeof UniversRouteWithChildren
   '/univers/$id': typeof UniversIdRoute
+  '/univers/': typeof UniversIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/final': typeof FinalRoute
-  '/univers': typeof UniversRouteWithChildren
   '/univers/$id': typeof UniversIdRoute
+  '/univers': typeof UniversIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/final': typeof FinalRoute
-  '/univers': typeof UniversRouteWithChildren
   '/univers/$id': typeof UniversIdRoute
+  '/univers/': typeof UniversIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/final' | '/univers' | '/univers/$id'
+  fullPaths: '/' | '/final' | '/univers/$id' | '/univers/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/final' | '/univers' | '/univers/$id'
-  id: '__root__' | '/' | '/final' | '/univers' | '/univers/$id'
+  to: '/' | '/final' | '/univers/$id' | '/univers'
+  id: '__root__' | '/' | '/final' | '/univers/$id' | '/univers/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FinalRoute: typeof FinalRoute
-  UniversRoute: typeof UniversRouteWithChildren
+  UniversIndexRoute: typeof UniversIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/univers': {
-      id: '/univers'
-      path: '/univers'
-      fullPath: '/univers'
-      preLoaderRoute: typeof UniversRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/final': {
       id: '/final'
       path: '/final'
@@ -91,6 +84,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/univers/': {
+      id: '/univers/'
+      path: '/univers'
+      fullPath: '/univers/'
+      preLoaderRoute: typeof UniversIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/univers/$id': {
       id: '/univers/$id'
       path: '/$id'
@@ -101,21 +101,10 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface UniversRouteChildren {
-  UniversIdRoute: typeof UniversIdRoute
-}
-
-const UniversRouteChildren: UniversRouteChildren = {
-  UniversIdRoute: UniversIdRoute,
-}
-
-const UniversRouteWithChildren =
-  UniversRoute._addFileChildren(UniversRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FinalRoute: FinalRoute,
-  UniversRoute: UniversRouteWithChildren,
+  UniversIndexRoute: UniversIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -4,7 +4,7 @@ import { universes } from "@/lib/universes";
 import { useEffect, useState } from "react";
 import { loadProgress } from "@/lib/progress";
 
-export const Route = createFileRoute("/univers")({
+export const Route = createFileRoute("/univers/")({
   component: Universes,
   head: () => ({
     meta: [
