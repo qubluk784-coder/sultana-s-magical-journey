@@ -10,11 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UniversRouteImport } from './routes/univers'
+import { Route as FinalRouteImport } from './routes/final'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as UniversIdRouteImport } from './routes/univers.$id'
 
 const UniversRoute = UniversRouteImport.update({
   id: '/univers',
   path: '/univers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FinalRoute = FinalRouteImport.update({
+  id: '/final',
+  path: '/final',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -22,31 +29,43 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UniversIdRoute = UniversIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => UniversRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/univers': typeof UniversRoute
+  '/final': typeof FinalRoute
+  '/univers': typeof UniversRouteWithChildren
+  '/univers/$id': typeof UniversIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/univers': typeof UniversRoute
+  '/final': typeof FinalRoute
+  '/univers': typeof UniversRouteWithChildren
+  '/univers/$id': typeof UniversIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/univers': typeof UniversRoute
+  '/final': typeof FinalRoute
+  '/univers': typeof UniversRouteWithChildren
+  '/univers/$id': typeof UniversIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/univers'
+  fullPaths: '/' | '/final' | '/univers' | '/univers/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/univers'
-  id: '__root__' | '/' | '/univers'
+  to: '/' | '/final' | '/univers' | '/univers/$id'
+  id: '__root__' | '/' | '/final' | '/univers' | '/univers/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  UniversRoute: typeof UniversRoute
+  FinalRoute: typeof FinalRoute
+  UniversRoute: typeof UniversRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -58,6 +77,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UniversRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/final': {
+      id: '/final'
+      path: '/final'
+      fullPath: '/final'
+      preLoaderRoute: typeof FinalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -65,12 +91,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/univers/$id': {
+      id: '/univers/$id'
+      path: '/$id'
+      fullPath: '/univers/$id'
+      preLoaderRoute: typeof UniversIdRouteImport
+      parentRoute: typeof UniversRoute
+    }
   }
 }
 
+interface UniversRouteChildren {
+  UniversIdRoute: typeof UniversIdRoute
+}
+
+const UniversRouteChildren: UniversRouteChildren = {
+  UniversIdRoute: UniversIdRoute,
+}
+
+const UniversRouteWithChildren =
+  UniversRoute._addFileChildren(UniversRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  UniversRoute: UniversRoute,
+  FinalRoute: FinalRoute,
+  UniversRoute: UniversRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
