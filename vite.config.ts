@@ -1,13 +1,18 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
-  plugins: [react()],
-  server: {
-    host: "0.0.0.0",
+  tanstackStart: {
+    server: { entry: "server" },
   },
-  preview: {
-    host: "0.0.0.0",
-    allowedHosts: ["sultana-s-magical-journey-kjys.onrender.com"],
+
+  vite: {
+    server: {
+      host: "0.0.0.0",
+    },
+
+    preview: {
+      host: "0.0.0.0",
+      allowedHosts: ["sultana-s-magical-journey-kjys.onrender.com"],
+    },
   },
 });
