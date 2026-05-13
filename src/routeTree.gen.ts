@@ -30,9 +30,9 @@ const UniversIndexRoute = UniversIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const UniversIdRoute = UniversIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => UniversRoute,
+  id: '/univers/$id',
+  path: '/univers/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -65,6 +65,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FinalRoute: typeof FinalRoute
+  UniversIdRoute: typeof UniversIdRoute
   UniversIndexRoute: typeof UniversIndexRoute
 }
 
@@ -93,10 +94,10 @@ declare module '@tanstack/react-router' {
     }
     '/univers/$id': {
       id: '/univers/$id'
-      path: '/$id'
+      path: '/univers/$id'
       fullPath: '/univers/$id'
       preLoaderRoute: typeof UniversIdRouteImport
-      parentRoute: typeof UniversRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -104,18 +105,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FinalRoute: FinalRoute,
+  UniversIdRoute: UniversIdRoute,
   UniversIndexRoute: UniversIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
