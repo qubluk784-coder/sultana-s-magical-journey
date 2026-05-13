@@ -4,19 +4,8 @@ import academyImg from "@/assets/universe-academy.png";
 import webImg from "@/assets/universe-web.png";
 
 export type Question =
-  | {
-      type: "tf";
-      prompt: string;
-      correct: boolean;
-      explanation: string;
-    }
-  | {
-      type: "mc";
-      prompt: string;
-      options: string[];
-      correct: string;
-      explanation: string;
-    };
+  | { type: "tf"; prompt: string; correct: boolean; explanation: string }
+  | { type: "mc"; prompt: string; options: string[]; correct: string; explanation: string };
 
 export type Universe = {
   id: string;
@@ -26,64 +15,50 @@ export type Universe = {
   badge: string;
   badgeName: string;
   image: string;
-  accent: string; // tailwind text color hint
+  accent: string;
   questions: Question[];
   resources: { title: string; body: string }[];
 };
+
+const tf = (prompt: string, correct: boolean, explanation: string): Question => ({ type: "tf", prompt, correct, explanation });
+const mc = (prompt: string, options: string[], correct: string, explanation: string): Question => ({ type: "mc", prompt, options, correct, explanation });
 
 export const universes: Universe[] = [
   {
     id: "forteresse",
     title: "La Forteresse de la Loi",
     subtitle: "Tes droits sont ton bouclier",
-    theme: "Protection, égalité, droits légaux et familiaux.",
-    badge: "🏛️",
+    theme: "Protection, égalité, droits civils et famille.",
+    badge: "🏰",
     badgeName: "Gardienne de la Loi",
     image: fortressImg,
     accent: "from-amber-200/70 to-rose-200/60",
     questions: [
-      {
-        type: "tf",
-        prompt: "L'âge légal du mariage au Maroc est 18 ans.",
-        correct: true,
-        explanation: "La Moudawana fixe l'âge légal du mariage à 18 ans pour protéger les jeunes filles.",
-      },
-      {
-        type: "mc",
-        prompt: "Si quelqu'un veut te forcer à te marier, as-tu le droit de dire non ?",
-        options: ["Oui", "Non", "Seulement avec l'accord de mes parents"],
-        correct: "Oui",
-        explanation: "Personne ne peut te forcer à te marier contre ta volonté. C'est un droit fondamental protégé par la loi.",
-      },
-      {
-        type: "tf",
-        prompt: "Une maman peut donner la nationalité marocaine à ses enfants.",
-        correct: true,
-        explanation: "La loi marocaine reconnaît ce droit aux mamans marocaines depuis la réforme du Code de la nationalité.",
-      },
-      {
-        type: "mc",
-        prompt: "À quel âge peut-on obtenir sa carte d'identité (CNIE) ?",
-        options: ["14 ans", "16 ans", "18 ans"],
-        correct: "16 ans",
-        explanation: "La CNIE peut être demandée à partir de 16 ans. C'est ton premier document officiel d'adulte.",
-      },
-      {
-        type: "tf",
-        prompt: "Une fille a le même droit à l'héritage qu'un garçon dans tous les cas.",
-        correct: false,
-        explanation: "Le droit successoral marocain prévoit des règles spécifiques. Mais des réformes sont en discussion pour avancer vers plus d'égalité.",
-      },
+      tf("L'âge légal du mariage au Maroc est 18 ans.", true, "La Moudawana fixe l'âge légal du mariage à 18 ans pour protéger les jeunes filles."),
+      mc("Si quelqu'un veut te forcer à te marier, as-tu le droit de dire non ?", ["Oui", "Non", "Seulement avec l'accord des parents"], "Oui", "Personne ne peut te forcer à te marier. C'est un droit fondamental."),
+      tf("Une maman peut donner la nationalité marocaine à ses enfants.", true, "La loi marocaine reconnaît ce droit aux mamans marocaines."),
+      mc("À quel âge peut-on obtenir sa carte d'identité (CNIE) ?", ["14 ans", "16 ans", "18 ans"], "16 ans", "La CNIE peut être demandée à partir de 16 ans."),
+      mc("Qui est responsable de la maison ?", ["Le papa seul", "La maman seule", "Le papa et la maman ensemble"], "Le papa et la maman ensemble", "La famille est une responsabilité partagée entre les deux parents."),
+      tf("L'école est obligatoire pour les filles jusqu'à 16 ans.", true, "L'enseignement est un droit garanti à toutes et tous au Maroc."),
+      mc("Une femme peut-elle garder son nom de famille après le mariage ?", ["Oui", "Non", "Seulement si son mari accepte"], "Oui", "Au Maroc, une femme conserve son nom de famille toute sa vie."),
+      tf("Les garçons et les filles sont égaux devant la loi marocaine.", true, "L'égalité est un principe inscrit dans la Constitution marocaine."),
+      mc("Une femme peut-elle voyager seule quand elle est majeure ?", ["Oui", "Non", "Seulement avec un homme de la famille"], "Oui", "Une femme majeure est libre de voyager avec son propre passeport."),
+      mc("Peux-tu choisir tes propres études sans permission ?", ["Oui, c'est mon choix", "Non, jamais", "Seulement si mon père est d'accord"], "Oui, c'est mon choix", "Le choix de tes études t'appartient. C'est ton avenir."),
+      tf("Une femme a le droit d'être juge au Maroc.", true, "Des Marocaines siègent dans tous les tribunaux du Royaume."),
+      mc("Qu'est-ce que l'Article 19 ?", ["Une loi sur l'école", "La loi qui dit que l'homme et la femme sont égaux", "Une loi sur le sport"], "La loi qui dit que l'homme et la femme sont égaux", "L'Article 19 de la Constitution garantit l'égalité entre hommes et femmes."),
+      tf("Une femme peut signer un contrat de travail toute seule.", true, "Toute femme majeure peut signer ses propres contrats."),
+      mc("Est-ce que la loi protège les femmes contre le harcèlement ?", ["Non", "Oui, loi 103.13", "Seulement à la maison"], "Oui, loi 103.13", "La loi 103-13 protège les femmes contre toutes formes de violence."),
+      tf("Une femme peut être « Adoul » (notaire) au Maroc.", true, "Depuis 2018, les femmes peuvent exercer la fonction d'Adoul."),
+      mc("À quel âge devient-on majeure au Maroc ?", ["16 ans", "18 ans", "21 ans"], "18 ans", "La majorité légale est fixée à 18 ans : tu deviens responsable de tes choix."),
+      mc("Si on t'empêche d'aller à l'école, est-ce légal ?", ["Oui, si les parents décident", "Non", "Seulement pour les filles"], "Non", "L'éducation est un droit garanti par la loi. Personne ne peut te le retirer."),
+      tf("Une femme peut posséder une entreprise.", true, "Beaucoup de Marocaines dirigent leurs propres entreprises avec succès."),
+      mc("Une femme peut-elle demander le divorce si elle est en danger ?", ["Oui", "Non", "Seulement avec accord du mari"], "Oui", "La Moudawana permet à la femme de demander le divorce, notamment en cas de danger."),
+      tf("La loi marocaine interdit de traiter les filles différemment des garçons.", true, "La discrimination basée sur le genre est interdite par la Constitution."),
     ],
     resources: [
-      {
-        title: "La Moudawana",
-        body: "Le Code de la famille marocain protège tes droits : âge minimum du mariage, garde, divorce et plus encore.",
-      },
-      {
-        title: "Numéro d'urgence",
-        body: "En cas de violence ou de mariage forcé, appelle le 8350 (numéro vert national pour les femmes victimes de violences).",
-      },
+      { title: "La Moudawana", body: "Le Code de la famille protège tes droits : âge minimum, garde, divorce et plus." },
+      { title: "Numéro vert", body: "En cas de violence ou mariage forcé, appelle le 8350 (numéro national d'écoute)." },
+      { title: "Loi 103-13", body: "Cette loi sanctionne toutes les violences faites aux femmes, y compris en ligne." },
     ],
   },
   {
@@ -96,168 +71,105 @@ export const universes: Universe[] = [
     image: gardenImg,
     accent: "from-emerald-200/70 to-teal-200/60",
     questions: [
-      {
-        type: "tf",
-        prompt: "Personne n'a le droit de toucher mon corps sans ma permission.",
-        correct: true,
-        explanation: "Ton corps t'appartient. Le consentement est une règle absolue, à tout âge.",
-      },
-      {
-        type: "mc",
-        prompt: "Si je me sens mal à l'aise avec un adulte, je dois :",
-        options: [
-          "Garder le silence pour ne pas créer de problèmes",
-          "En parler à une personne de confiance",
-          "Faire comme si de rien n'était",
-        ],
-        correct: "En parler à une personne de confiance",
-        explanation: "Parler est un acte de courage. Une maman, une tante, une enseignante ou une amie peut t'aider.",
-      },
-      {
-        type: "tf",
-        prompt: "Avoir ses règles est quelque chose de naturel et il ne faut pas en avoir honte.",
-        correct: true,
-        explanation: "Les règles font partie d'un cycle naturel. C'est un signe de bonne santé, pas un sujet tabou.",
-      },
-      {
-        type: "mc",
-        prompt: "À quelle fréquence devrais-tu voir un médecin pour un suivi de santé ?",
-        options: ["Jamais sauf si je suis très malade", "Une fois par an au moins", "Seulement à 18 ans"],
-        correct: "Une fois par an au moins",
-        explanation: "Un suivi régulier permet de prendre soin de ta santé sur le long terme. C'est un droit.",
-      },
-      {
-        type: "tf",
-        prompt: "Le consentement peut être retiré à tout moment.",
-        correct: true,
-        explanation: "Dire oui une fois ne veut pas dire toujours. Tu peux changer d'avis quand tu veux.",
-      },
+      mc("À qui appartient ton corps ?", ["À mes parents", "À moi seule", "À mon futur mari"], "À moi seule", "Ton corps n'appartient qu'à toi. Personne d'autre ne décide pour lui."),
+      tf("Avoir ses règles est une maladie.", false, "Pas exactement… Les règles sont un signe de bonne santé et un cycle naturel."),
+      mc("Que faire si quelqu'un te touche et que tu ne veux pas ?", ["Garder le silence", "Dire non et partir", "Faire semblant que tout va bien"], "Dire non et partir", "Ta voix est ton premier bouclier. Dire non est ton droit absolu."),
+      tf("Les changements de la puberté arrivent à tout le monde.", true, "Tous les corps changent à la puberté. Tu n'es pas seule à vivre cela."),
+      mc("Quelle est la meilleure matière pour tes vêtements intimes ?", ["Le plastique", "Le coton", "La laine"], "Le coton", "Le coton laisse respirer la peau et limite les irritations."),
+      mc("Qu'est-ce qu'un « mauvais secret » ?", ["Un secret amusant", "Un secret qui te rend triste ou peur", "Un secret entre amies"], "Un secret qui te rend triste ou peur", "Un secret qui te fait du mal doit être partagé avec un adulte de confiance."),
+      tf("On peut faire du sport pendant les règles.", true, "Le sport est même bénéfique pour soulager certaines douleurs."),
+      mc("Comment appelle-t-on le fait d'être d'accord pour un câlin ?", ["La politesse", "Le consentement", "L'amitié"], "Le consentement", "Le consentement, c'est dire oui librement. Il peut être retiré à tout moment."),
+      tf("Il est normal d'être plus fatiguée pendant ses règles.", true, "Ton corps travaille beaucoup pendant le cycle. Repose-toi sans culpabiliser."),
+      mc("Combien de fois faut-il se laver par jour ?", ["Jamais", "Au moins une fois", "Cinq fois"], "Au moins une fois", "Une bonne hygiène quotidienne protège ta santé et ta confiance."),
+      mc("Vers qui aller si on s'inquiète pour son corps ?", ["Personne", "Maman ou médecin", "Une inconnue sur Internet"], "Maman ou médecin", "Une personne de confiance ou un professionnel de santé saura t'écouter."),
+      tf("On doit demander la permission avant de te prendre en photo.", true, "Ton image t'appartient. Personne ne peut te photographier sans ton accord."),
+      mc("Les règles durent-elles toute la vie ?", ["Oui", "Non, seulement une période", "Seulement quelques mois"], "Non, seulement une période", "Les règles s'arrêtent à la ménopause, autour de 50 ans en moyenne."),
+      tf("Le corps d'une fille est plus fragile que celui d'un garçon.", false, "Pas exactement… Les corps sont différents, mais ni plus faible ni plus fort."),
+      mc("Qu'est-ce que l'espace personnel ?", ["Ma chambre", "La bulle de sécurité autour de moi", "Mon casier à l'école"], "La bulle de sécurité autour de moi", "C'est la distance avec laquelle tu te sens à l'aise. Tu en fixes les limites."),
+      mc("Pourquoi faut-il manger des légumes ?", ["Parce que c'est obligatoire", "Pour donner de la force au corps", "Pour faire plaisir à maman"], "Pour donner de la force au corps", "Les légumes apportent les vitamines dont ton corps a besoin pour grandir."),
+      tf("Les garçons aussi changent à la puberté.", true, "Tous les corps évoluent à la puberté, garçons comme filles."),
+      mc("Que faire si on a très mal au ventre ?", ["Souffrir en silence", "En parler à un adulte de confiance", "Ne rien manger"], "En parler à un adulte de confiance", "Une douleur forte mérite une attention. N'hésite jamais à en parler."),
+      tf("Ton poids définit si tu es une bonne personne.", false, "Pas exactement… Ta valeur ne se mesure pas sur une balance. Tu es bien plus que ton corps."),
+      mc("Pourquoi est-il important de dormir 8h ?", ["Pour rêver", "Pour que le cerveau grandisse", "Pour éviter l'école"], "Pour que le cerveau grandisse", "Le sommeil aide ton cerveau à apprendre et ton corps à se régénérer."),
     ],
     resources: [
-      {
-        title: "Santé et hygiène",
-        body: "Les centres de santé publics offrent des consultations confidentielles pour les jeunes filles.",
-      },
-      {
-        title: "Parler en confiance",
-        body: "Une personne de confiance peut être un parent, un professeur, ou une assistante sociale à l'école.",
-      },
+      { title: "Santé et hygiène", body: "Les centres de santé publics offrent un suivi gratuit pour les jeunes filles." },
+      { title: "Parler en confiance", body: "Maman, tante, professeure, infirmière scolaire : choisis la personne avec qui tu te sens à l'aise." },
+      { title: "Le consentement", body: "Dire oui doit être libre, éclairé et peut être retiré à tout moment." },
     ],
   },
   {
     id: "academie",
     title: "L'Académie des Pionnières",
     subtitle: "Tes rêves sont ton avenir",
-    theme: "Éducation, ambition, carrières et indépendance.",
-    badge: "🎓",
+    theme: "Éducation, ambition, métiers et indépendance.",
+    badge: "🚀",
     badgeName: "Pionnière de l'Avenir",
     image: academyImg,
     accent: "from-sky-200/70 to-indigo-200/50",
     questions: [
-      {
-        type: "tf",
-        prompt: "L'école est obligatoire pour les filles comme pour les garçons jusqu'à 15 ans au Maroc.",
-        correct: true,
-        explanation: "L'éducation est un droit garanti pour toutes et tous, sans distinction.",
-      },
-      {
-        type: "mc",
-        prompt: "Quel métier une femme peut-elle exercer au Maroc ?",
-        options: ["Pilote d'avion", "Médecin", "Ingénieure", "Tous ces métiers"],
-        correct: "Tous ces métiers",
-        explanation: "Aucun métier n'est interdit aux femmes. Des Marocaines brillent dans tous les domaines : sciences, arts, sports, politique.",
-      },
-      {
-        type: "tf",
-        prompt: "Une femme peut ouvrir un compte bancaire et gérer son argent seule.",
-        correct: true,
-        explanation: "L'autonomie financière est un droit. Tu peux ouvrir un compte dès 12 ans avec l'accord parental, et seule à 18 ans.",
-      },
-      {
-        type: "mc",
-        prompt: "Qui était la première femme marocaine pilote de ligne ?",
-        options: ["Touria Chaoui", "Fatema Mernissi", "Asmae El Moudir"],
-        correct: "Touria Chaoui",
-        explanation: "Touria Chaoui est devenue la première pilote marocaine et arabe en 1951, à seulement 19 ans.",
-      },
-      {
-        type: "tf",
-        prompt: "Étudier longtemps réduit mes chances de trouver un mari.",
-        correct: false,
-        explanation: "Pas exactement… Tes études sont un investissement pour TOI. Elles t'ouvrent des portes et te rendent libre de tes choix.",
-      },
+      mc("Une femme peut-elle être pilote d'avion ?", ["Oui", "Non", "Seulement copilote"], "Oui", "Touria Chaoui fut la première Marocaine pilote dès 1951. Le ciel n'a pas de genre."),
+      tf("Fatima Al-Fihriya a créé la 1ère université au monde.", true, "Elle a fondé l'Université Al Quaraouiyine à Fès en 859. Une fierté marocaine !"),
+      mc("Les mathématiques sont-elles réservées aux garçons ?", ["Oui", "Non, c'est pour tous", "Seulement pour les enfants"], "Non, c'est pour tous", "Les maths sont une langue universelle. Aucun cerveau n'est moins doué selon le genre."),
+      tf("Une femme peut être ministre au Maroc.", true, "De nombreuses femmes ont occupé des postes ministériels au Maroc."),
+      mc("Que signifie être « autonome » ?", ["Vivre seule", "Savoir faire les choses par soi-même", "Ne plus parler à sa famille"], "Savoir faire les choses par soi-même", "L'autonomie, c'est la liberté de penser, décider et agir par soi-même."),
+      tf("Les filles peuvent apprendre à coder des ordinateurs.", true, "La programmation est une compétence d'avenir, ouverte à toutes."),
+      mc("Pourquoi faut-il avoir un diplôme ?", ["Pour faire plaisir aux parents", "Pour avoir le choix de son futur", "Pour décorer le mur"], "Pour avoir le choix de son futur", "Un diplôme ouvre des portes et te donne le pouvoir de choisir ta vie."),
+      tf("Une femme marocaine a déjà été dans l'espace.", false, "Pas encore… mais ce sera peut-être TOI ! Pourquoi pas ?"),
+      mc("Peut-on être maman et avoir un grand métier ?", ["Non, il faut choisir", "Oui, bien sûr", "Seulement si on est riche"], "Oui, bien sûr", "Beaucoup de femmes mènent une carrière brillante et une vie de famille épanouie."),
+      mc("Une femme peut-elle ouvrir son propre magasin ?", ["Oui", "Non", "Seulement avec son mari"], "Oui", "L'entrepreneuriat féminin est en plein essor au Maroc."),
+      tf("Le sport professionnel est aussi pour les femmes.", true, "Les Marocaines brillent en athlétisme, football, taekwondo et bien d'autres sports."),
+      mc("Qu'est-ce que l'égalité des salaires ?", ["Tout le monde gagne pareil", "Payer pareil pour le même travail", "Donner moins aux jeunes"], "Payer pareil pour le même travail", "À travail égal, salaire égal : c'est un principe de justice."),
+      mc("Qui peut devenir ingénieure ?", ["Seulement les garçons", "Toute fille qui travaille bien à l'école", "Personne"], "Toute fille qui travaille bien à l'école", "Le talent et le travail font l'ingénieure, pas le genre."),
+      tf("Une femme peut diriger une ville entière.", true, "Plusieurs femmes ont été élues maires au Maroc, notamment à Marrakech."),
+      mc("Pourquoi l'argent de poche est-il utile ?", ["Pour acheter des bonbons", "Pour apprendre à gérer son budget", "Pour le donner aux amies"], "Pour apprendre à gérer son budget", "Gérer un peu d'argent jeune, c'est apprendre l'autonomie financière."),
+      tf("Il existe des métiers interdits aux femmes au Maroc.", false, "Pas exactement… Aucun métier n'est interdit aux femmes au Maroc."),
+      mc("Que faire si on rate un examen ?", ["Tout abandonner", "Recommencer et ne pas abandonner", "Pleurer pour toujours"], "Recommencer et ne pas abandonner", "Échouer fait partie d'apprendre. Les plus grandes recommencent toujours."),
+      mc("Une fille peut-elle être chef de chantier ?", ["Oui", "Non", "Seulement si elle est forte"], "Oui", "Le bâtiment, l'industrie, la mécanique : tous les métiers sont accessibles."),
+      tf("Les filles sont de meilleures lectrices que les garçons.", false, "Pas exactement… Chacun est différent. Il n'y a pas de règle générale."),
+      mc("Quel est le pouvoir secret des études ?", ["La richesse", "La liberté", "La popularité"], "La liberté", "Étudier, c'est bâtir ta liberté de choisir ta vie. C'est ton plus grand trésor."),
     ],
     resources: [
-      {
-        title: "Bourses d'études",
-        body: "L'État marocain et plusieurs ONG proposent des bourses pour les filles brillantes en milieu rural.",
-      },
-      {
-        title: "Modèles inspirants",
-        body: "Découvre les parcours de Merieme Chadid (astronome), Saâdia Ouazzani (créatrice) ou Khadija Bencheikh (entrepreneure).",
-      },
+      { title: "Bourses d'études", body: "L'État et plusieurs ONG proposent des bourses pour les filles brillantes en milieu rural." },
+      { title: "Pionnières marocaines", body: "Fatima Al-Fihriya, Touria Chaoui, Merieme Chadid, Saâdia Ouazzani… elles ont ouvert la voie." },
+      { title: "Orientation", body: "Renseigne-toi auprès des conseillers d'orientation : il existe des centaines de métiers." },
     ],
   },
   {
     id: "vigie",
     title: "La Vigie du Web",
     subtitle: "Sois lumineuse, sois prudente",
-    theme: "Sécurité numérique et conscience d'internet.",
+    theme: "Sécurité numérique et conscience d'Internet.",
     badge: "🛡️",
     badgeName: "Vigie du Web",
     image: webImg,
     accent: "from-violet-300/60 to-fuchsia-200/50",
     questions: [
-      {
-        type: "tf",
-        prompt: "Je dois donner mon adresse à une personne rencontrée sur Internet si elle me le demande gentiment.",
-        correct: false,
-        explanation: "Ne partage jamais ton adresse, ton école ou ton numéro avec un inconnu en ligne, même s'il semble sympathique.",
-      },
-      {
-        type: "mc",
-        prompt: "Si quelqu'un me harcèle ou m'envoie des messages dérangeants, je dois :",
-        options: [
-          "Répondre pour me défendre",
-          "Bloquer, garder une preuve et en parler à un adulte",
-          "Supprimer mon compte en silence",
-        ],
-        correct: "Bloquer, garder une preuve et en parler à un adulte",
-        explanation: "Garder des captures d'écran aide à signaler. Tu n'es jamais seule face au cyberharcèlement.",
-      },
-      {
-        type: "tf",
-        prompt: "Une photo postée sur Internet peut être copiée et rester en ligne pour toujours.",
-        correct: true,
-        explanation: "Ce qui est en ligne y reste. Réfléchis avant de partager une photo — protège ton image.",
-      },
-      {
-        type: "mc",
-        prompt: "Un mot de passe sécurisé doit :",
-        options: [
-          "Être ton prénom et ta date de naissance",
-          "Mélanger lettres, chiffres et symboles",
-          "Être identique sur tous tes comptes",
-        ],
-        correct: "Mélanger lettres, chiffres et symboles",
-        explanation: "Un bon mot de passe est long, unique et secret. Active aussi la double authentification quand c'est possible.",
-      },
-      {
-        type: "tf",
-        prompt: "Le cyberharcèlement est puni par la loi marocaine.",
-        correct: true,
-        explanation: "La loi 103-13 protège contre les violences numériques. Tu peux porter plainte.",
-      },
+      mc("Doit-on donner son mot de passe à sa meilleure amie ?", ["Oui, c'est ma meilleure amie", "Non, c'est privé", "Seulement à mes parents"], "Non, c'est privé", "Un mot de passe ne se partage avec personne, même la meilleure amie. C'est ton intimité numérique."),
+      tf("Tout ce qu'on voit sur Internet est vrai.", false, "Pas exactement… Beaucoup d'informations en ligne sont fausses. Vérifie toujours tes sources."),
+      mc("Que faire si un inconnu t'envoie un message ?", ["Lui répondre poliment", "Ne pas répondre et bloquer", "Lui donner mon adresse"], "Ne pas répondre et bloquer", "Un inconnu en ligne reste un inconnu. Bloque et signale."),
+      tf("Poster la photo d'une amie sans lui demander est interdit.", true, "L'image d'une personne lui appartient. C'est une règle de respect et de loi."),
+      mc("Qu'est-ce qu'un « filtre » ?", ["Un objet pour boire", "Un outil qui change la réalité des photos", "Un type de mot de passe"], "Un outil qui change la réalité des photos", "Les filtres modifient la réalité. Les visages parfaits en ligne sont rarement réels."),
+      mc("Pourquoi ne pas dire où tu habites en ligne ?", ["Parce que c'est secret", "Pour rester en sécurité", "Pour ne pas faire jaloux"], "Pour rester en sécurité", "Ton adresse, ton école, ta routine : ces infos peuvent être utilisées contre toi."),
+      tf("Le cyber-harcèlement est puni par la loi marocaine.", true, "La loi 103-13 sanctionne toute violence numérique."),
+      mc("Si tu es triste à cause d'un message, que fais-tu ?", ["Je le garde pour moi", "J'en parle à mes parents", "Je réponds méchamment"], "J'en parle à mes parents", "Tu n'es jamais seule. Parler à un adulte de confiance, c'est se protéger."),
+      tf("On peut devenir amie pour de vrai avec quelqu'un qu'on ne voit qu'en ligne.", false, "Pas exactement… Reste prudente : derrière un écran, on ne sait jamais qui est vraiment là."),
+      mc("Qu'est-ce qu'une « Fake News » ?", ["Une bonne nouvelle", "Une fausse information", "Une info sportive"], "Une fausse information", "Les fake news circulent vite. Vérifie avant de partager."),
+      mc("Comment créer un bon mot de passe ?", ["Mon prénom et ma date de naissance", "Avec des lettres, chiffres et signes", "Le même partout"], "Avec des lettres, chiffres et signes", "Long, varié, unique : un bon mot de passe te protège vraiment."),
+      tf("On peut supprimer une photo d'Internet pour toujours.", false, "Pas exactement… Une photo peut être copiée et rester en ligne. Réfléchis avant de poster."),
+      mc("Pourquoi limiter le temps d'écran ?", ["Pour économiser la batterie", "Pour protéger ses yeux et son sommeil", "Pour ennuyer ses parents"], "Pour protéger ses yeux et son sommeil", "Trop d'écrans fatigue les yeux, le cerveau et perturbe le sommeil."),
+      tf("Les jeux vidéo aident à devenir plus intelligente.", true, "Avec modération, ils développent la réflexion, la stratégie et la mémoire."),
+      mc("Que faire si quelqu'un te menace sur Facebook ?", ["Effacer le message", "Prendre une capture d'écran et prévenir un adulte", "Répondre par une menace"], "Prendre une capture d'écran et prévenir un adulte", "Une preuve écrite t'aidera à signaler et te protéger."),
+      mc("Est-ce poli de commenter méchamment une photo ?", ["Oui, c'est mon avis", "Non, le respect est partout", "Seulement entre amies"], "Non, le respect est partout", "Le respect ne s'arrête pas à l'écran. Tes mots ont un vrai pouvoir."),
+      tf("Tes parents ont le droit de savoir ce que tu fais en ligne.", true, "Tes parents te protègent. Le dialogue avec eux est ta meilleure sécurité."),
+      mc("Un lien bizarre arrive par message, cliques-tu ?", ["Oui, par curiosité", "Non, c'est peut-être un virus", "Seulement si c'est joli"], "Non, c'est peut-être un virus", "Un lien suspect peut voler tes données. Dans le doute, ne clique jamais."),
+      tf("Une fille peut être une experte en cybersécurité.", true, "La cybersécurité a besoin de cerveaux brillants, et le tien en fait partie."),
+      mc("Quel est l'outil le plus puissant sur Internet ?", ["Un ordinateur rapide", "Ton cerveau !", "Un bon Wi-Fi"], "Ton cerveau !", "Ton esprit critique est ta plus grande arme. Réfléchis, doute, vérifie."),
     ],
     resources: [
-      {
-        title: "Signaler un contenu",
-        body: "Sur Instagram, TikTok, Snapchat : utilise le bouton « Signaler ». Pour les cas graves, contacte la police judiciaire.",
-      },
-      {
-        title: "Loi 103-13",
-        body: "Cette loi marocaine sanctionne les violences faites aux femmes, y compris en ligne.",
-      },
+      { title: "Signaler", body: "Sur Instagram, TikTok, WhatsApp : utilise le bouton « Signaler ». Pour les cas graves : police judiciaire." },
+      { title: "Loi 103-13", body: "Cette loi marocaine sanctionne les violences faites aux femmes, y compris en ligne." },
+      { title: "Esprit critique", body: "Avant de croire ou partager : qui dit ça ? quelle source ? quelle preuve ?" },
     ],
   },
 ];
