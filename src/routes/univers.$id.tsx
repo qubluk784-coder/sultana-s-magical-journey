@@ -111,10 +111,10 @@ function UniversePage() {
           {!done ? (
             <motion.div
               key={step}
-              initial={{ opacity: 0, x: 24, filter: "blur(4px)" }}
-              animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, x: -24, filter: "blur(4px)" }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, x: 60, scale: 0.96, filter: "blur(6px)" }}
+              animate={{ opacity: 1, x: 0, scale: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, x: -60, scale: 0.96, filter: "blur(6px)" }}
+              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
               className="mt-5 flex-1 flex flex-col"
             >
               {/* Premium question card */}
