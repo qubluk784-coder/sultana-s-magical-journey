@@ -23,11 +23,11 @@ export type Universe = {
 const tf = (prompt: string, correct: boolean, explanation: string): Question => ({ type: "tf", prompt, correct, explanation });
 const mc = (prompt: string, options: string[], correct: string, explanation: string): Question => ({ type: "mc", prompt, options, correct, explanation });
 
-export const universes: Universe[] = [
+const universesRaw: Universe[] = [
   {
     id: "forteresse",
-    title: "La Forteresse de la Loi",
-    subtitle: "Tes droits sont ton bouclier",
+    title: "Le Palais des Droits",
+    subtitle: "Explore un palais plein de défis pour découvrir tes droits, la confiance en toi et le pouvoir de faire tes propres choix 👑",
     theme: "Protection, égalité, droits civils et famille.",
     badge: "🏰",
     badgeName: "Gardienne de la Loi",
@@ -63,8 +63,8 @@ export const universes: Universe[] = [
   },
   {
     id: "jardin",
-    title: "Le Jardin de l'Éclosion",
-    subtitle: "Ton corps, ton temple",
+    title: "Mon Jardin Secret",
+    subtitle: "Découvre un univers calme et magique pour apprendre à prendre soin de toi, comprendre tes émotions et respecter ton corps ✨",
     theme: "Respect du corps, santé, consentement et limites personnelles.",
     badge: "🌸",
     badgeName: "Fleur du Jardin",
@@ -100,8 +100,8 @@ export const universes: Universe[] = [
   },
   {
     id: "academie",
-    title: "L'Académie des Pionnières",
-    subtitle: "Tes rêves sont ton avenir",
+    title: "Ma Boîte à Rêves",
+    subtitle: "Entre dans un monde inspirant où tous les rêves sont possibles et découvre les métiers, les études et tes futurs super-pouvoirs 🌟",
     theme: "Éducation, ambition, métiers et indépendance.",
     badge: "🚀",
     badgeName: "Pionnière de l'Avenir",
@@ -137,8 +137,8 @@ export const universes: Universe[] = [
   },
   {
     id: "vigie",
-    title: "La Vigie du Web",
-    subtitle: "Sois lumineuse, sois prudente",
+    title: "Le Club des Amies",
+    subtitle: "Apprends à rester en sécurité, faire les bons choix et avancer avec confiance à l'école, dans la rue et sur Internet 💖",
     theme: "Sécurité numérique et conscience d'Internet.",
     badge: "🛡️",
     badgeName: "Vigie du Web",
@@ -173,5 +173,8 @@ export const universes: Universe[] = [
     ],
   },
 ];
+
+const universesOrder = ["jardin", "forteresse", "academie", "vigie"] as const;
+export const universes: Universe[] = universesOrder.map((id) => universesRaw.find((u) => u.id === id)!);
 
 export const getUniverse = (id: string) => universes.find((u) => u.id === id);
