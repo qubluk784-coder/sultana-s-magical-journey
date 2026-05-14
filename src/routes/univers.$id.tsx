@@ -67,7 +67,7 @@ function UniversePage() {
 
   function next() {
     if (step + 1 >= total) {
-      completeUniverse(universe.id);
+      completeUniverse(universe!.id);
       setDone(true);
     } else {
       setStep((s) => s + 1);
